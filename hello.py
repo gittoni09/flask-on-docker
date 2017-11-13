@@ -5,7 +5,7 @@ from flask import render_template
 app = Flask(__name__)
 
 #Print host name for debugging purposes
-hostname = os.environ['COMPUTERNAME']
+hostname = os.environ['HOSTNAME']
 print "Hostname: ", hostname
 
 @app.route('/')
@@ -48,4 +48,7 @@ def show_user_profile(username):
 @app.errorhandler(404)
 def not_found(error):
     return render_template('error404.html'), 404
+
+if __name__ == '__main__':
+    app.run(debug=True,host='0.0.0.0')
 
