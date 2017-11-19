@@ -22,7 +22,7 @@ def c2f():
         farenList.append(faren)
         cel =+ 10
     zipped = zip(celsiusList, farenList)
-    return render_template('c2f.html', x=zipped)
+    return render_template('c2f.html', x=zipped, hostname=hostname )
 
 @app.route('/f2c')
 def f2c():
@@ -34,20 +34,19 @@ def f2c():
         celsiusList.append(celsi)
         faren =+ 10
     zipped = zip(farenList, celsiusList)
-    return render_template('f2c.html', x=zipped)
+    return render_template('f2c.html', x=zipped, hostname=hostname )
+
+@app.route('/guesser')
+def guesser():
+    return render_template('guesser.html', hostname=hostname )
 	
-@app.route('/hello/')
-@app.route('/hello/<name>')
-def hello(name=None):
-    return render_template('hello.html', name=name) 
-
-@app.route('/user/<username>')
-def show_user_profile(username):
-    return 'User %s' % username
-
+@app.route('/missing')
+def missing():
+    return render_template('missing.html', hostname=hostname )
+	
 @app.errorhandler(404)
 def not_found(error):
-    return render_template('error404.html'), 404
+    return render_template('error404.html', hostname=hostname ), 404
 
 if __name__ == '__main__':
     app.run(debug=True,host='0.0.0.0')
