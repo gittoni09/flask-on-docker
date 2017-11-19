@@ -1,18 +1,14 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Hello from Toni</title>
-</head>
-<body>
-<h4>hostname: {{ hostname }}</h4>
-<link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
-<br>
+{% extends "layout.html" %}
+{% block body %}
 <h1> Welcome! </h1>
+<div>
+Available applications:
 <br>
-<br>
-<a href="/c2f">Celsius to Farenheit</a> 
-<br>
-<br>
-<a href="/f2c">Farenheit to Celsius</a> 
-</body>
-</html>
+<p>
+<ul>
+	<li><a href="/c2f">Celsius to Farenheit</a></li>
+	<li><a href="/f2c">Farenheit to Celsius</a></li>
+</ul>
+</p>
+</div>
+{% endblock %}
