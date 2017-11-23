@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import os
 from datetime import datetime
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 
 app = Flask(__name__)
 
@@ -10,7 +10,7 @@ app = Flask(__name__)
 # else:
    # ip = request.remote_addr
 #https://stackoverflow.com/questions/12770950/flask-request-remote-addr-is-wrong-on-webfaction-and-not-showing-real-user-ip?noredirect=1&lq=1
-
+#OK: https://stackoverflow.com/questions/3759981/get-ip-address-of-visitors
    
 #Print host name for debugging purposes
 hostname = os.environ['HOSTNAME']
@@ -19,7 +19,9 @@ print "Hostname: ", hostname
 @app.route('/')
 def index():
     currentdatetime = datetime.now()
-    return render_template('index.html', hostname=hostname, currentdatetime=currentdatetime )
+    clientIP = request.remote_addr
+    print request.environ['REMOTE_ADDR']
+    return render_template('index.html', hostname=hostname, currentdatetime=currentdatetime, clientIP=clientIP )
 
 @app.route('/c2f')
 def c2f():
