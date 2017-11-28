@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import os
+import socket
 from datetime import datetime
 from flask import Flask, render_template, request, jsonify
 
@@ -14,7 +15,7 @@ app = Flask(__name__)
    
 #Obtain hostname, if it exists 
 try:
-    hostname = os.environ['HOSTNAME']
+    hostname = socket.gethostname()
 except:
     hostname = "No hostname"
 
@@ -36,6 +37,8 @@ def c2f():
         cel =+ 10
     zipped = zip(celsiusList, farenList)
     currentdatetime = datetime.now()
+    clientIP = request.remote_addr
+    remote_addr = request.environ['REMOTE_ADDR']
     return render_template('c2f.html', x=zipped, hostname=hostname, currentdatetime=currentdatetime, clientIP=clientIP, remote_addr=remote_addr )
 
 @app.route('/f2c')
@@ -49,21 +52,29 @@ def f2c():
         faren =+ 10
     zipped = zip(farenList, celsiusList)
     currentdatetime = datetime.now()
+    clientIP = request.remote_addr
+    remote_addr = request.environ['REMOTE_ADDR']
     return render_template('f2c.html', x=zipped, hostname=hostname, currentdatetime=currentdatetime, clientIP=clientIP, remote_addr=remote_addr)
 
 @app.route('/guesser')
 def guesser():
     currentdatetime = datetime.now()
+    clientIP = request.remote_addr
+    remote_addr = request.environ['REMOTE_ADDR']
     return render_template('guesser.html', hostname=hostname, currentdatetime=currentdatetime, clientIP=clientIP, remote_addr=remote_addr )
 	
 @app.route('/missing')
 def missing():
     currentdatetime = datetime.now()
+    clientIP = request.remote_addr
+    remote_addr = request.environ['REMOTE_ADDR']
     return render_template('missing.html', hostname=hostname, currentdatetime=currentdatetime, clientIP=clientIP, remote_addr=remote_addr )
 	
 @app.errorhandler(404)
 def not_found(error):
     currentdatetime = datetime.now()
+    clientIP = request.remote_addr
+    remote_addr = request.environ['REMOTE_ADDR']
     return render_template('error404.html', hostname=hostname, currentdatetime=currentdatetime, clientIP=clientIP, remote_addr=remote_addr ), 404
 
 if __name__ == '__main__':
