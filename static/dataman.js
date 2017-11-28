@@ -10,15 +10,12 @@ function NumGen()
 function OperationSelector()
 	{
 	
-	//DEBUG
-	//return "+";
-	
 	var myNumber = Math.round(Math.random() * 10);
-		if (myNumber > 5)
+	if (myNumber > 5)
 		{
 			return "+";
 		} 
-		else
+	else
 		{
 			return "-";
 		}
@@ -31,7 +28,7 @@ function GenOp (OpSign)
 	var op1 = Math.round(Math.random() * 100);
 	var op2 = Math.round(Math.random() * 100);
 	var op3 = 0;
-	if (op2 > op1) //If op2 > op1 the values are exchange to avoid negative results
+	if (op2 > op1) //If op2 > op1 the values are exchanged to avoid negative results
 		{
 		 op3 = op1;
 		 op1= op2;

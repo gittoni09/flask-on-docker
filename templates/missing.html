@@ -1,7 +1,19 @@
 {% extends "layout.html" %}
 {% block body %}
 
+<canvas id="myCanvas" width="350" height="100" style="border:1px solid #d3d3d3;">
+Your browser does not support the HTML5 canvas tag.</canvas>
+
+<script type="text/javascript" src="{{ url_for('static', filename='dataman.js') }}"></script>
 <script>
+	document.body.onkeypress = function (event) {
+		 event = event || window.event;
+		 if (event.keyCode == 13) {
+			 document.getElementById("mySubmit").click(); 
+			 return false;
+		 }
+		 return true;
+	}
 	function Verifier()
 	{
 		//Retrieves the value of the number just submitted
@@ -15,13 +27,12 @@
 		}
 		if (player_value == result)
 		{
-		ctx.clearRect(0,0,350,100);
-		points = points + 1;
-		ctx.fillText("Correct. Points: " + points,10,30);
-
+			ctx.clearRect(0,0,350,100);
+			points = points + 1;
+			ctx.fillText("Correct. Points: " + points,10,30);
 		} else {
-		ctx.clearRect(0,0,350,100);
-		ctx.fillText("Not correct. Points: " + points,10,30);
+			ctx.clearRect(0,0,350,100);
+			ctx.fillText("Not correct. Points: " + points,10,30);
 		}
 		
 		//One operation less to go
@@ -42,68 +53,46 @@
 			document.getElementById("MissingNumber").value="";
 		} else
 		{
-		ctx.clearRect(0,0,350,100);
-		ctx.fillText("Game over", 10,30);
-		ctx.fillText("Total points: " + points,10,65);
-		document.getElementById("MissingNumber").disabled=true;
-		document.getElementById("mySubmit").disabled=true;
+			ctx.clearRect(0,0,350,100);
+			ctx.fillText("Game over", 10,30);
+			ctx.fillText("Total points: " + points,10,65);
+			document.getElementById("MissingNumber").disabled=true;
+			document.getElementById("mySubmit").disabled=true;
 		}
 		
 		
 	}
-</script>
 
-<script type="text/javascript" src="{{ url_for('static', filename='dataman.js') }}"></script>
-<script>
+//Game starts with zero points
 var points = 0;
+//Select the aritmethic operation + or -
 var Operation = OperationSelector();
-//DEBUG
-//alert (Operation);
-
+//Total number of ops in the game
 var guesses = 10;
+//The first operation ia always an addition
 var CurrentOp = GenOp ("+");
-
-//DEBUG
-//alert (CurrentOp);
-
+//Split the returned operation in its components
 var co = CurrentOp.split(";");
 var num1 = co[0];
 var num2 = co[1];
 var num3 = co[2];
 var num4 = co[3];
 
+//Display the operation on the canvas
+var c=document.getElementById("myCanvas");
+var ctx=c.getContext("2d");
+ctx.font="25px Arial";
+displ = num1 + " " + Operation + " " + num3 + " " + num4;  
+ctx.fillText(displ,10,50);
+
 </script>
+
 <p><h1>Missing Number</h1></p>
-
-<canvas id="myCanvas" width="350" height="100" style="border:1px solid #d3d3d3;">
-Your browser does not support the HTML5 canvas tag.</canvas>
-
-<script>
-
-	var c=document.getElementById("myCanvas");
-	var ctx=c.getContext("2d");
-	ctx.font="25px Arial";
-	displ = num1 + " " + Operation + " " + num3 + " " + num4;  
-	ctx.fillText(displ,10,50);
-
-</script>
 
 <p>
 Missing number: <br>
 <input type="text" id="MissingNumber" autofocus><br>
 <button type="button" id="mySubmit" onclick= Verifier()> Submit</button><br>
-
-<script>
-	document.body.onkeypress = function (event) {
-		 event = event || window.event;
-		 if (event.keyCode == 13) {
-			 document.getElementById("mySubmit").click(); 
-			 return false;
-		 }
-		 return true;
-	}
-</script>
-
 </p>
 <hr>
 <p>
