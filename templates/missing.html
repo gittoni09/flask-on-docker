@@ -70,7 +70,8 @@ var Operation = OperationSelector();
 //Total number of ops in the game
 var guesses = 10;
 //The first operation ia always an addition
-var CurrentOp = GenOp ("+");
+//var CurrentOp = GenOp ("+");
+var CurrentOp = GenOp (Operation);
 //Split the returned operation in its components
 var co = CurrentOp.split(";");
 var num1 = co[0];
