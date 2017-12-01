@@ -44,3 +44,25 @@ function GenOp (OpSign)
 				return op1 + ";-;" + op2 + "; = [ ] ";
 			} 	
 	}
+//Auxiliary functions for the Missing brackets game
+function GenNumbers (OpSign)
+{
+	var op1 = Math.round(Math.random() * 100);
+	var op2 = Math.round(Math.random() * 100);
+	var op3 = 0;
+	if (OpSign == "-" && op2 > op1) //If op2 > op1 the values are exchanged to avoid negative results
+		{
+		 var temp = op1;
+		 op1 = op2;
+		 op2 = temp;
+		}	
+	if (OpSign == "+")
+		{
+			var op3 = Number (op1) + Number(op2);
+		} else
+		{
+			var op3 = Number (op1) - Number(op2);
+		}
+	return op1 + ";" + op2 + ";" + op3;	
+}
+

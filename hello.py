@@ -64,6 +64,13 @@ def missing():
     clientIP = request.remote_addr
     remote_addr = request.environ['REMOTE_ADDR']
     return render_template('missing.html', hostname=hostname, currentdatetime=currentdatetime, clientIP=clientIP )
+
+@app.route('/missingposition')
+def missingpos():
+    currentdatetime = datetime.now()
+    clientIP = request.remote_addr
+    remote_addr = request.environ['REMOTE_ADDR']
+    return render_template('missingpos.html', hostname=hostname, currentdatetime=currentdatetime, clientIP=clientIP )
 	
 @app.errorhandler(404)
 def not_found(error):
