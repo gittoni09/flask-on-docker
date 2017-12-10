@@ -1,8 +1,8 @@
-//Auxiliary functions for the NumberGuesser game
-function NumGen()
+//Auxiliary functions for the NumberGuesser and Wipe Out games
+function NumGen(Limit)
 	{
-	// Random number is generated everytime the page loads
-	var myNumber = Math.round(Math.random() * 100);
+	// Random number is generated between 0 and Limit value
+	var myNumber = Math.round(Math.random() * Limit);
 	return myNumber;
 	}
 
@@ -44,7 +44,7 @@ function GenOp (OpSign)
 				return op1 + ";-;" + op2 + "; = [ ] ";
 			} 	
 	}
-//Auxiliary functions for the Missing brackets game
+//Auxiliary functions for the Missing brackets game  [ ? ]
 function GenNumbers (OpSign)
 {
 	var op1 = Math.round(Math.random() * 100);

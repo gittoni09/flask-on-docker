@@ -71,6 +71,13 @@ def missingpos():
     clientIP = request.remote_addr
     remote_addr = request.environ['REMOTE_ADDR']
     return render_template('missingpos.html', hostname=hostname, currentdatetime=currentdatetime, clientIP=clientIP )
+
+@app.route('/wipeout')
+def wipeout():
+    currentdatetime = datetime.now()
+    clientIP = request.remote_addr
+    remote_addr = request.environ['REMOTE_ADDR']
+    return render_template('wipeout.html', hostname=hostname, currentdatetime=currentdatetime, clientIP=clientIP )
 	
 @app.errorhandler(404)
 def not_found(error):
