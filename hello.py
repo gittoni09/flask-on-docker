@@ -3,6 +3,11 @@ import os
 import socket
 from datetime import datetime
 from flask import Flask, render_template, request, jsonify
+#Imports for MatPlotLib page
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+
 
 app = Flask(__name__)
 
@@ -79,6 +84,16 @@ def wipeout():
     remote_addr = request.environ['REMOTE_ADDR']
     return render_template('wipeout.html', hostname=hostname, currentdatetime=currentdatetime, clientIP=clientIP )
 	
+@app.route('/matplot')
+def matplot():
+    currentdatetime = datetime.now()
+    clientIP = request.remote_addr
+    remote_addr = request.environ['REMOTE_ADDR']
+    plt.plot([1, 2, 3,4], [1,4,9,44], 'ro')
+    plt.axis([0, 6, 0, 100])
+    plt.savefig('./static/matplotfig.png') 
+    return render_template('matplot.html', hostname=hostname, currentdatetime=currentdatetime, clientIP=clientIP )
+
 @app.errorhandler(404)
 def not_found(error):
     currentdatetime = datetime.now()
