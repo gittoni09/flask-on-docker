@@ -1,6 +1,30 @@
 {% extends "layout.html" %}
 {% block body %}
 
+<script>
+function validateForm() {
+    var x = document.forms["plotForm"]["xvalues"].value;
+    var y = document.forms["plotForm"]["yvalues"].value;
+    if (x == "" || y=="") {
+        alert("X and Y values must be filled out");
+        return false;
+    }
+}
+</script> 
+
+<form name="plotForm" action="/matplot" method="post" autocomplete="off" onsubmit="return validateForm()">
+  X values:<br>
+  <input type="text" name="xvalues"><br>
+  Y values:<br>
+  <input type="text" name="yvalues"><br>
+  X axis:<br>
+  <input type="text" name="xaxis"><br>
+  Y axis:<br>
+  <input type="text" name="yaxis"><br>
+  <input type="submit" value="Submit"><br>
+  <br>
+</form> 
+
 
  <img src="{{ url_for('static', filename='matplotfig.png') }}" alt="MatPlotLib figure" > 
 

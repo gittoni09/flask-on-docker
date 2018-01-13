@@ -8,10 +8,10 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
+#Constants
+pathToPlot = './static/matplotfig.png'
 
 app = Flask(__name__)
-
-#OK: https://stackoverflow.com/questions/3759981/get-ip-address-of-visitors
    
 #Obtain hostname, if it exists 
 try:
@@ -38,7 +38,7 @@ def c2f():
     zipped = zip(celsiusList, farenList)
     currentdatetime = datetime.now()
     clientIP = request.remote_addr
-    remote_addr = request.environ['REMOTE_ADDR']
+    #remote_addr = request.environ['REMOTE_ADDR']
     return render_template('c2f.html', x=zipped, hostname=hostname, currentdatetime=currentdatetime, clientIP=clientIP )
 
 @app.route('/f2c')
@@ -53,54 +53,87 @@ def f2c():
     zipped = zip(farenList, celsiusList)
     currentdatetime = datetime.now()
     clientIP = request.remote_addr
-    remote_addr = request.environ['REMOTE_ADDR']
+    #remote_addr = request.environ['REMOTE_ADDR']
     return render_template('f2c.html', x=zipped, hostname=hostname, currentdatetime=currentdatetime, clientIP=clientIP )
 
 @app.route('/guesser')
 def guesser():
     currentdatetime = datetime.now()
     clientIP = request.remote_addr
-    remote_addr = request.environ['REMOTE_ADDR']
+    #remote_addr = request.environ['REMOTE_ADDR']
     return render_template('guesser.html', hostname=hostname, currentdatetime=currentdatetime, clientIP=clientIP )
 	
 @app.route('/missing')
 def missing():
     currentdatetime = datetime.now()
     clientIP = request.remote_addr
-    remote_addr = request.environ['REMOTE_ADDR']
+    #remote_addr = request.environ['REMOTE_ADDR']
     return render_template('missing.html', hostname=hostname, currentdatetime=currentdatetime, clientIP=clientIP )
 
 @app.route('/missingposition')
 def missingpos():
     currentdatetime = datetime.now()
     clientIP = request.remote_addr
-    remote_addr = request.environ['REMOTE_ADDR']
+    #remote_addr = request.environ['REMOTE_ADDR']
     return render_template('missingpos.html', hostname=hostname, currentdatetime=currentdatetime, clientIP=clientIP )
 
 @app.route('/wipeout')
 def wipeout():
     currentdatetime = datetime.now()
     clientIP = request.remote_addr
-    remote_addr = request.environ['REMOTE_ADDR']
+    #remote_addr = request.environ['REMOTE_ADDR']
     return render_template('wipeout.html', hostname=hostname, currentdatetime=currentdatetime, clientIP=clientIP )
 	
-@app.route('/matplot')
+@app.route('/matplot', methods=['POST', 'GET'])
 def matplot():
     currentdatetime = datetime.now()
     clientIP = request.remote_addr
-    remote_addr = request.environ['REMOTE_ADDR']
-    plt.plot([1, 2, 3,4], [1,4,9,44], 'ro')
-    plt.axis([0, 6, 0, 100])
-    plt.savefig('./static/matplotfig.png') 
+    #remote_addr = request.environ['REMOTE_ADDR']
+    if request.method == 'POST':
+        xValues = request.form['xvalues'].split(',')
+        yValues = request.form['yvalues'].split(',')
+        #print xValues
+        #print yValues
+        xValuesInt = []
+        for num in xValues:
+            xValuesInt.append( int(num))
+        yValuesInt = []
+        for num in yValues:
+            yValuesInt.append( int(num))
+        print xValuesInt
+        print yValuesInt
+        plt.plot (xValuesInt, yValuesInt, 'ro')
+        axisDef = (request.form['xaxis'] + ',' + request.form['yaxis']).split(',')
+        axisDefInt = []
+        for num in axisDef:
+            axisDefInt.append( int(num))
+        print axisDefInt
+        plt.axis (axisDefInt)
+        #Remove output file if exists
+        try:
+            os.remove(pathToPlot)
+        except:
+            print "Previous plot file not found"
+        #Save plot
+        plt.savefig (pathToPlot)
+        #do_the_login()
+    else:
+        #Remove output file if exists
+        try:
+            os.remove(pathToPlot)
+        except:
+            print "Previous plot file not found"
+
     return render_template('matplot.html', hostname=hostname, currentdatetime=currentdatetime, clientIP=clientIP )
 
 @app.errorhandler(404)
 def not_found(error):
     currentdatetime = datetime.now()
     clientIP = request.remote_addr
-    remote_addr = request.environ['REMOTE_ADDR']
+    #remote_addr = request.environ['REMOTE_ADDR']
     return render_template('error404.html', hostname=hostname, currentdatetime=currentdatetime, clientIP=clientIP ), 404
 
 if __name__ == '__main__':
     app.run(debug=True,host='0.0.0.0')
+
 
