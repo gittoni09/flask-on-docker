@@ -9,16 +9,30 @@ matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 #Constants
-pathToPlot = './static/matplotfig.png'
+pathToPlot = './static'
+imgPrefix = 'mathplot'
+imgSuffix = '.png'
 
-app = Flask(__name__)
-   
+#Cleanup temp image directory
+#folder = pathToPlot
+#for the_file in os.listdir(folder):
+#    file_path = os.path.join(folder, the_file)
+#    try:
+#        if os.path.isfile(file_path):
+#            os.unlink(file_path)
+#    except Exception as e:
+#        print(e)
+
 #Obtain hostname, if it exists 
 try:
     hostname = socket.gethostname()
 except:
     hostname = "No hostname"
 
+#Define Flask app
+app = Flask(__name__)
+   
+#Define all paths
 @app.route('/')
 def index():
     currentdatetime = datetime.now()
@@ -38,7 +52,6 @@ def c2f():
     zipped = zip(celsiusList, farenList)
     currentdatetime = datetime.now()
     clientIP = request.remote_addr
-    #remote_addr = request.environ['REMOTE_ADDR']
     return render_template('c2f.html', x=zipped, hostname=hostname, currentdatetime=currentdatetime, clientIP=clientIP )
 
 @app.route('/f2c')
@@ -53,84 +66,67 @@ def f2c():
     zipped = zip(farenList, celsiusList)
     currentdatetime = datetime.now()
     clientIP = request.remote_addr
-    #remote_addr = request.environ['REMOTE_ADDR']
     return render_template('f2c.html', x=zipped, hostname=hostname, currentdatetime=currentdatetime, clientIP=clientIP )
 
 @app.route('/guesser')
 def guesser():
     currentdatetime = datetime.now()
     clientIP = request.remote_addr
-    #remote_addr = request.environ['REMOTE_ADDR']
     return render_template('guesser.html', hostname=hostname, currentdatetime=currentdatetime, clientIP=clientIP )
 	
 @app.route('/missing')
 def missing():
     currentdatetime = datetime.now()
     clientIP = request.remote_addr
-    #remote_addr = request.environ['REMOTE_ADDR']
     return render_template('missing.html', hostname=hostname, currentdatetime=currentdatetime, clientIP=clientIP )
 
 @app.route('/missingposition')
 def missingpos():
     currentdatetime = datetime.now()
     clientIP = request.remote_addr
-    #remote_addr = request.environ['REMOTE_ADDR']
     return render_template('missingpos.html', hostname=hostname, currentdatetime=currentdatetime, clientIP=clientIP )
 
 @app.route('/wipeout')
 def wipeout():
     currentdatetime = datetime.now()
     clientIP = request.remote_addr
-    #remote_addr = request.environ['REMOTE_ADDR']
     return render_template('wipeout.html', hostname=hostname, currentdatetime=currentdatetime, clientIP=clientIP )
 	
 @app.route('/matplot', methods=['POST', 'GET'])
 def matplot():
     currentdatetime = datetime.now()
     clientIP = request.remote_addr
-    #remote_addr = request.environ['REMOTE_ADDR']
+    imagepath = pathToPlot
+    #Generate random name for image name based on current time to avoid cache issues
+    midImgName = currentdatetime.strftime("%H%M%S%f")
     if request.method == 'POST':
+        #Read and convert plot values
         xValues = request.form['xvalues'].split(',')
         yValues = request.form['yvalues'].split(',')
-        #print xValues
-        #print yValues
         xValuesInt = []
         for num in xValues:
             xValuesInt.append( int(num))
         yValuesInt = []
         for num in yValues:
             yValuesInt.append( int(num))
-        print xValuesInt
-        print yValuesInt
         plt.plot (xValuesInt, yValuesInt, 'ro')
+	#Read and conver axis values
         axisDef = (request.form['xaxis'] + ',' + request.form['yaxis']).split(',')
         axisDefInt = []
         for num in axisDef:
             axisDefInt.append( int(num))
-        print axisDefInt
         plt.axis (axisDefInt)
-        #Remove output file if exists
-        try:
-            os.remove(pathToPlot)
-        except:
-            print "Previous plot file not found"
-        #Save plot
-        plt.savefig (pathToPlot)
-        #do_the_login()
-    else:
-        #Remove output file if exists
-        try:
-            os.remove(pathToPlot)
-        except:
-            print "Previous plot file not found"
-
-    return render_template('matplot.html', hostname=hostname, currentdatetime=currentdatetime, clientIP=clientIP )
+        #Save  and close plot
+	imagepath = imagepath + '/' + imgPrefix + midImgName + imgSuffix
+        plt.savefig (imagepath)
+        plt.close ()
+    webimagepath = imgPrefix + midImgName + imgSuffix
+    return render_template('matplot.html', hostname=hostname, currentdatetime=currentdatetime, clientIP=clientIP, webimagepath=webimagepath )
 
 @app.errorhandler(404)
 def not_found(error):
     currentdatetime = datetime.now()
     clientIP = request.remote_addr
-    #remote_addr = request.environ['REMOTE_ADDR']
     return render_template('error404.html', hostname=hostname, currentdatetime=currentdatetime, clientIP=clientIP ), 404
 
 if __name__ == '__main__':

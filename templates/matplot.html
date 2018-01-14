@@ -13,20 +13,20 @@ function validateForm() {
 </script> 
 
 <form name="plotForm" action="/matplot" method="post" autocomplete="off" onsubmit="return validateForm()">
-  X values:<br>
+  X values (format: value1, value2, ...):<br>
   <input type="text" name="xvalues"><br>
-  Y values:<br>
+  Y values (format: value1, value2, ...):<br>
   <input type="text" name="yvalues"><br>
-  X axis:<br>
+  X axis (format: Xmin, Xmax):<br>
   <input type="text" name="xaxis"><br>
-  Y axis:<br>
+  Y axis (format: Ymin, Ymax):<br>
   <input type="text" name="yaxis"><br>
   <input type="submit" value="Submit"><br>
   <br>
 </form> 
 
 
- <img src="{{ url_for('static', filename='matplotfig.png') }}" alt="MatPlotLib figure" > 
+ <img src="{{ url_for('static', filename=webimagepath) }}" alt="MatPlotLib figure" > 
 
 
 {% endblock %}
