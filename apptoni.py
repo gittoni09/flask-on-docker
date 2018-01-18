@@ -102,14 +102,16 @@ def matplot():
     if request.method == 'POST':
         #Read and convert plot values
         xValues = request.form['xvalues'].split(',')
-        yValues = request.form['yvalues'].split(',')
         xValuesInt = []
         for num in xValues:
             xValuesInt.append( int(num))
+        yValues = request.form['yvalues'].split(',')
         yValuesInt = []
         for num in yValues:
             yValuesInt.append( int(num))
-        plt.plot (xValuesInt, yValuesInt, 'ro')
+	#Line color combobox
+        lineColor = request.form['color'] + "--"
+        plt.plot (xValuesInt, yValuesInt, lineColor)
 	#Read and conver axis values
         axisDef = (request.form['xaxis'] + ',' + request.form['yaxis']).split(',')
         axisDefInt = []
