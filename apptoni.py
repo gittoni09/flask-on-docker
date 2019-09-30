@@ -119,7 +119,7 @@ def matplot():
             axisDefInt.append( int(num))
         plt.axis (axisDefInt)
         #Save  and close plot
-	imagepath = imagepath + '/' + imgPrefix + midImgName + imgSuffix
+        imagepath = imagepath + '/' + imgPrefix + midImgName + imgSuffix
         plt.savefig (imagepath)
         plt.close ()
     webimagepath = imgPrefix + midImgName + imgSuffix
